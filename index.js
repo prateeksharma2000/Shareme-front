@@ -13,7 +13,7 @@ const toast = document.querySelector(".toast");
 const maxAllowedSize = 100 * 1024 * 1024;
 
 
-const host = "http://localhost:3000/";
+const host = "https://shareme12.herokuapp.com/";
 const uploadURL = `${host}api/files`;
 const emailURL = `${host}api/files/send`;
 
@@ -120,34 +120,6 @@ const resetFileInput = ()=>{
     fileInput.value = "";
 }
 
-// emailForm.addEventListener("submit" , (e)=>{
-//     e.preventDefault();
-    
-//     const url = fileURL.value;
-//     const formData = {
-//         uuid: url.split("/").splice(-1,1)[0],
-//         emailTo: emailForm.elements["to-email"].value,
-//         emailFrom: emailForm.elements["from-email"].value
-//     }
-    
-//     emailForm[2].setAttribute("disabled" , "true");
-
-//     fetch(emailURL,{
-//         method: "POST",
-//         headers:{
-//             "Content-type": "application/json"
-//         },
-//         body: JSON.stringify(formData)
-//     })
-//     .then(res => res.json())
-//     .then(({success})=>{
-//         if(success){
-//             sharingContainer.style.display = "none";
-//             showToast("Email Sent");
-//         }
-//     })
-//     .catch(err => console.log(err.message) );
-// })
 
 emailForm.addEventListener("submit", (e) => {
     e.preventDefault(); // stop submission
