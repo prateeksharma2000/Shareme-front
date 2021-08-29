@@ -13,7 +13,7 @@ const toast = document.querySelector(".toast");
 const maxAllowedSize = 100 * 1024 * 1024;
 
 
-const host = "https://shareme12.herokuapp.com/";
+const host = "http://localhost:3000/";
 const uploadURL = `${host}api/files`;
 const emailURL = `${host}api/files/send`;
 
@@ -120,34 +120,69 @@ const resetFileInput = ()=>{
     fileInput.value = "";
 }
 
-emailForm.addEventListener("submit" , (e)=>{
-    e.preventDefault();
+// emailForm.addEventListener("submit" , (e)=>{
+//     e.preventDefault();
     
+//     const url = fileURL.value;
+//     const formData = {
+//         uuid: url.split("/").splice(-1,1)[0],
+//         emailTo: emailForm.elements["to-email"].value,
+//         emailFrom: emailForm.elements["from-email"].value
+//     }
+    
+//     emailForm[2].setAttribute("disabled" , "true");
+
+//     fetch(emailURL,{
+//         method: "POST",
+//         headers:{
+//             "Content-type": "application/json"
+//         },
+//         body: JSON.stringify(formData)
+//     })
+//     .then(res => res.json())
+//     .then(({success})=>{
+//         if(success){
+//             sharingContainer.style.display = "none";
+//             showToast("Email Sent");
+//         }
+//     })
+//     .catch(err => console.log(err.message) );
+// })
+
+emailForm.addEventListener("submit", (e) => {
+    e.preventDefault(); // stop submission
+  
+    // disable the button
+    emailForm[2].setAttribute("disabled", "true");
+    emailForm[2].innerText = "Sending";
+  
     const url = fileURL.value;
+  
     const formData = {
-        uuid: url.split("/").splice(-1,1)[0],
-        emailTo: emailForm.elements["to-email"].value,
-        emailFrom: emailForm.elements["from-email"].value
-    }
-    
-    emailForm[2].setAttribute("disabled" , "true");
-
-    fetch(emailURL,{
-        method: "POST",
-        headers:{
-            "Content-type": "application/json"
-        },
-        body: JSON.stringify(formData)
+      uuid: url.split("/").splice(-1, 1)[0],
+      emailTo: emailForm.elements["to-email"].value,
+      emailFrom: emailForm.elements["from-email"].value,
+    };
+    console.log(formData);
+    fetch(emailURL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
     })
-    .then(res => res.json())
-    .then(({success})=>{
-        if(success){
-            sharingContainer.style.display = "none";
-            showToast("Email Sent");
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          showToast("Email Sent");
+          sharingContainer.style.display = "none"; // hide the box
         }
-    })
-})
-
+        else{
+            console.log(data.error);
+        }
+      });
+  });
+  
 
 const showToast = (msg)=>{
     toast.innerText = msg;
